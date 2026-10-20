@@ -14,7 +14,7 @@
 
 ![Headless AI-Native ERP Architecture](./docs/architecture.svg)
 
-*สร้างด้วย [Pikchr](./docs/architecture.pikchr) — สามารถเปิดไฟล์ [`docs/architecture.html`](./docs/architecture.html) เพื่อแก้ไขแผนภาพแบบ Live Interactive ได้ทันที*
+*สร้างด้วย [Pikchr](./docs/architecture.pikchr) — ดูไฟล์ [`docs/architecture.html`](./docs/architecture.html) | [เปิด Live Interactive Editor บนเว็บทันที](https://htmlpreview.github.io/?https://github.com/um1981/Headless-AI-Native-ERP/blob/main/docs/architecture.html) | [รูปภาพ PNG ความละเอียดสูง](./docs/architecture.png)*
 
 ---
 
