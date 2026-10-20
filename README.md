@@ -14,7 +14,7 @@ A **Headless AI-Native ERP** engineered with a **Ledger-First** philosophy, **Fa
 
 ![Headless AI-Native ERP Architecture](./docs/architecture.svg)
 
-*Authored with [Pikchr](./docs/architecture.pikchr) — open [`docs/architecture.html`](./docs/architecture.html) in a browser for an interactive pan/zoom view and live editor.*
+*Authored with [Pikchr](./docs/architecture.pikchr) — View [`docs/architecture.html`](./docs/architecture.html) | [Open Live Interactive Editor in Browser](https://htmlpreview.github.io/?https://github.com/um1981/Headless-AI-Native-ERP/blob/main/docs/architecture.html) | [High-DPI PNG](./docs/architecture.png)*
 
 ---
 
