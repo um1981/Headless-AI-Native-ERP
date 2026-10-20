@@ -1,0 +1,77 @@
+<svg width="1831" height="520" xmlns='http://www.w3.org/2000/svg' class="pikchr" viewBox="-12.00 -12.00 1831.20 519.79">
+<style>svg.pikchr { font-family: "Leelawadee UI", "Segoe UI Variable", "Segoe UI", "Sarabun", sans-serif; text-rendering: optimizeLegibility; font-feature-settings: "mark" 1, "mkmk" 1, "ccmp" 1; }svg.pikchr text[font-family="monospace"], svg.pikchr text[font-family*="mono"] { font-family: "Cascadia Mono", "Consolas", "Geist Mono", monospace; }</style>
+<rect x="-12.00" y="-12.00" width="1831.20" height="519.79" fill="#ffffff" rx="6" />
+<path d="M14,454L345,454A12 12 0 0 0 357 442L357,14A12 12 0 0 0 345 2L14,2A12 12 0 0 0 2 14L2,442A12 12 0 0 0 14 454Z"  style="fill:rgb(239,246,255);stroke-width:2.16;stroke:rgb(147,197,253);" />
+<path d="M460,461L813,461A12 12 0 0 0 825 449L825,137A12 12 0 0 0 813 125L460,125A12 12 0 0 0 448 137L448,449A12 12 0 0 0 460 461Z"  style="fill:rgb(240,253,244);stroke-width:2.16;stroke:rgb(134,239,172);" />
+<path d="M942,479L1332,479A12 12 0 0 0 1344 467L1344,49A12 12 0 0 0 1332 37L942,37A12 12 0 0 0 930 49L930,467A12 12 0 0 0 942 479Z"  style="fill:rgb(254,243,199);stroke-width:2.16;stroke:rgb(252,211,77);" />
+<path d="M1446,493L1793,493A12 12 0 0 0 1805 481L1805,40A12 12 0 0 0 1793 28L1446,28A12 12 0 0 0 1434 40L1434,481A12 12 0 0 0 1446 493Z"  style="fill:rgb(254,252,232);stroke-width:2.16;stroke:rgb(253,224,71);" />
+<path d="M37,129L322,129A12 12 0 0 0 334 117L334,63A12 12 0 0 0 322 51L37,51A12 12 0 0 0 25 63L25,117A12 12 0 0 0 37 129Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(29,78,216);" />
+<text x="179" y="79" text-anchor="middle" fill="rgb(29,78,216)" dominant-baseline="central">Antigravity IDE</text>
+<text x="179" y="102" text-anchor="middle" font-weight="bold" fill="rgb(29,78,216)" dominant-baseline="central">(erp_pat_antigravity_...)</text>
+<path d="M37,228L322,228A12 12 0 0 0 334 216L334,163A12 12 0 0 0 322 151L37,151A12 12 0 0 0 25 163L25,216A12 12 0 0 0 37 228Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(29,78,216);" />
+<text x="179" y="178" text-anchor="middle" fill="rgb(29,78,216)" dominant-baseline="central">Claude Desktop</text>
+<text x="179" y="201" text-anchor="middle" font-weight="bold" fill="rgb(29,78,216)" dominant-baseline="central">(erp_pat_claude-desktop_...)</text>
+<path d="M37,328L322,328A12 12 0 0 0 334 316L334,262A12 12 0 0 0 322 250L37,250A12 12 0 0 0 25 262L25,316A12 12 0 0 0 37 328Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(29,78,216);" />
+<text x="179" y="277" text-anchor="middle" fill="rgb(29,78,216)" dominant-baseline="central">Claude Code</text>
+<text x="179" y="300" text-anchor="middle" font-weight="bold" fill="rgb(29,78,216)" dominant-baseline="central">(erp_pat_claude-code_...)</text>
+<path d="M37,427L322,427A12 12 0 0 0 334 415L334,361A12 12 0 0 0 322 349L37,349A12 12 0 0 0 25 361L25,415A12 12 0 0 0 37 427Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(29,78,216);" />
+<text x="179" y="377" text-anchor="middle" fill="rgb(29,78,216)" dominant-baseline="central">DSH / Custom Agent</text>
+<text x="179" y="400" text-anchor="middle" font-weight="bold" fill="rgb(29,78,216)" dominant-baseline="central">(Scoped / Read-Only PAT)</text>
+<path d="M483,302L790,302A12 12 0 0 0 802 290L802,188A12 12 0 0 0 790 176L483,176A12 12 0 0 0 471 188L471,290A12 12 0 0 0 483 302Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(21,128,61);" />
+<text x="637" y="216" text-anchor="middle" fill="rgb(21,128,61)" dominant-baseline="central">ERP MCP Server</text>
+<text x="637" y="239" text-anchor="middle" fill="rgb(21,128,61)" dominant-baseline="central">(TypeScript / Stdio / HTTP)</text>
+<text x="637" y="262" text-anchor="middle" font-weight="bold" fill="rgb(21,128,61)" dominant-baseline="central">Zero Direct Table Access</text>
+<path d="M483,434L790,434A12 12 0 0 0 802 422L802,365A12 12 0 0 0 790 353L483,353A12 12 0 0 0 471 365L471,422A12 12 0 0 0 483 434Z"  style="fill:rgb(254,242,242);stroke-width:2.16;stroke:rgb(185,28,28);" />
+<text x="637" y="382" text-anchor="middle" fill="rgb(185,28,28)" dominant-baseline="central">Direct Table REST API</text>
+<text x="637" y="402" text-anchor="middle" fill="rgb(185,28,28)" font-size="80%" dominant-baseline="central">RLS: USING (false) Blocked!</text>
+<path d="M965,176L1309,176A12 12 0 0 0 1321 164L1321,98A12 12 0 0 0 1309 86L965,86A12 12 0 0 0 953 98L953,164A12 12 0 0 0 965 176Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(180,83,9);" />
+<text x="1137" y="120" text-anchor="middle" fill="rgb(180,83,9)" dominant-baseline="central">fn_authenticate_and_authorize()</text>
+<text x="1137" y="143" text-anchor="middle" font-weight="bold" fill="rgb(180,83,9)" dominant-baseline="central">SHA-256 PAT + Dynamic RBAC</text>
+<path d="M965,314L1309,314A12 12 0 0 0 1321 302L1321,222A12 12 0 0 0 1309 210L965,210A12 12 0 0 0 953 222L953,302A12 12 0 0 0 965 314Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(29,78,216);" />
+<text x="1137" y="239" text-anchor="middle" fill="rgb(29,78,216)" dominant-baseline="central">Maker RPCs (สร้างชุดร่าง)</text>
+<text x="1137" y="262" text-anchor="middle" fill="rgb(29,78,216)" dominant-baseline="central">rpc_create_journal_draft</text>
+<text x="1137" y="285" text-anchor="middle" fill="rgb(29,78,216)" dominant-baseline="central">rpc_create_inventory_doc_draft</text>
+<path d="M965,452L1309,452A12 12 0 0 0 1321 440L1321,361A12 12 0 0 0 1309 349L965,349A12 12 0 0 0 953 361L953,440A12 12 0 0 0 965 452Z"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(21,128,61);" />
+<text x="1137" y="377" text-anchor="middle" fill="rgb(21,128,61)" dominant-baseline="central">Checker RPCs (อนุมัติ/Post)</text>
+<text x="1137" y="400" text-anchor="middle" fill="rgb(21,128,61)" dominant-baseline="central">Maker != Checker + วงเงินอนุมัติ</text>
+<text x="1137" y="423" text-anchor="middle" fill="rgb(21,128,61)" dominant-baseline="central">SUM(Debit) = SUM(Credit)</text>
+<path d="M1457,89L1457,174A162 10 0 0 0 1781 174L1781,89A162 10 0 0 0 1457 89A162 10 0 0 0 1781 89"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(133,77,14);" />
+<text x="1619" y="116" text-anchor="middle" fill="rgb(133,77,14)" dominant-baseline="central">Immutable GL Ledger</text>
+<text x="1619" y="139" text-anchor="middle" fill="rgb(133,77,14)" dominant-baseline="central">(gl_entries + vouchers)</text>
+<text x="1619" y="162" text-anchor="middle" font-weight="bold" fill="rgb(133,77,14)" dominant-baseline="central">Block UPDATE / DELETE</text>
+<path d="M1457,230L1457,315A162 10 0 0 0 1781 315L1781,230A162 10 0 0 0 1457 230A162 10 0 0 0 1781 230"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(133,77,14);" />
+<text x="1619" y="257" text-anchor="middle" fill="rgb(133,77,14)" dominant-baseline="central">Immutable Inventory</text>
+<text x="1619" y="280" text-anchor="middle" fill="rgb(133,77,14)" dominant-baseline="central">(inventory_transactions)</text>
+<text x="1619" y="303" text-anchor="middle" font-weight="bold" fill="rgb(133,77,14)" dominant-baseline="central">Auto-Post Linked GL</text>
+<path d="M1457,371L1457,456A162 10 0 0 0 1781 456L1781,371A162 10 0 0 0 1457 371A162 10 0 0 0 1781 371"  style="fill:rgb(255,255,255);stroke-width:2.16;stroke:rgb(51,65,85);" />
+<text x="1619" y="398" text-anchor="middle" fill="rgb(51,65,85)" dominant-baseline="central">Dual-Identity Audit</text>
+<text x="1619" y="421" text-anchor="middle" fill="rgb(51,65,85)" dominant-baseline="central">(audit_logs + heartbeats)</text>
+<text x="1619" y="444" text-anchor="middle" font-weight="bold" fill="rgb(51,65,85)" dominant-baseline="central">User ID + Agent Client</text>
+<text x="179" y="24" text-anchor="middle" font-weight="bold" fill="rgb(29,78,216)" font-size="80%" dominant-baseline="central">1. AI Clients (1 User : N PATs)</text>
+<text x="637" y="147" text-anchor="middle" font-weight="bold" fill="rgb(21,128,61)" font-size="80%" dominant-baseline="central">2. MCP Gateway Layer</text>
+<text x="1137" y="59" text-anchor="middle" font-weight="bold" fill="rgb(180,83,9)" font-size="80%" dominant-baseline="central">3. Fat Database (PL/pgSQL RPCs)</text>
+<text x="1619" y="50" text-anchor="middle" font-weight="bold" fill="rgb(133,77,14)" font-size="80%" dominant-baseline="central">4. Immutable PostgreSQL Ledgers</text>
+<polygon points="471,216 460,220 460,212" style="fill:rgb(29,78,216)"/>
+<path d="M334,90 L 373,90 Q 385,90 385,102 L 385,204 Q 385,216 397,216 L 453,216 L 465,216"  style="fill:none;stroke-width:2.16;stroke:rgb(29,78,216);" />
+<polygon points="471,232 460,236 460,228" style="fill:rgb(29,78,216)"/>
+<path d="M334,189 L 351,189 Q 363,189 363,201 L 363,220 Q 363,232 375,232 L 453,232 L 465,232"  style="fill:none;stroke-width:2.16;stroke:rgb(29,78,216);" />
+<polygon points="471,246 460,251 460,242" style="fill:rgb(29,78,216)"/>
+<path d="M334,289 L 351,289 Q 363,289 363,277 L 363,258 Q 363,246 375,246 L 453,246 L 465,246"  style="fill:none;stroke-width:2.16;stroke:rgb(29,78,216);" />
+<polygon points="471,262 460,266 460,258" style="fill:rgb(29,78,216)"/>
+<path d="M334,388 L 373,388 Q 385,388 385,376 L 385,274 Q 385,262 397,262 L 453,262 L 465,262"  style="fill:none;stroke-width:2.16;stroke:rgb(29,78,216);" />
+<polygon points="637,353 632,341 641,341" style="fill:rgb(185,28,28)"/>
+<path d="M637,302L637,347"  style="fill:none;stroke-width:2.16;stroke:rgb(185,28,28);stroke-dasharray:7.2,7.2;" />
+<polygon points="953,131 942,135 942,127" style="fill:rgb(21,128,61)"/>
+<path d="M802,239 L 851,239 Q 863,239 863,227 L 863,143 Q 863,131 875,131 L 936,131 L 948,131"  style="fill:none;stroke-width:2.16;stroke:rgb(21,128,61);" />
+<text x="878" y="185" text-anchor="start" font-weight="bold" fill="rgb(21,128,61)" font-size="80%" dominant-baseline="central"> rpc_*()</text>
+<polygon points="1137,210 1133,199 1141,199" style="fill:rgb(180,83,9)"/>
+<path d="M1137,176L1137,205"  style="fill:none;stroke-width:2.16;stroke:rgb(180,83,9);" />
+<polygon points="1137,349 1133,337 1141,337" style="fill:rgb(29,78,216)"/>
+<path d="M1137,314L1137,343"  style="fill:none;stroke-width:2.16;stroke:rgb(29,78,216);" />
+<polygon points="1457,131 1446,135 1446,127" style="fill:rgb(21,128,61)"/>
+<path d="M1321,400 L 1363,400 Q 1375,400 1375,388 L 1375,143 Q 1375,131 1387,131 L 1440,131 L 1452,131"  style="fill:none;stroke-width:2.16;stroke:rgb(21,128,61);" />
+<polygon points="1457,272 1446,277 1446,268" style="fill:rgb(21,128,61)"/>
+<path d="M1321,400 L 1363,400 Q 1375,400 1375,388 L 1375,284 Q 1375,272 1387,272 L 1440,272 L 1452,272"  style="fill:none;stroke-width:2.16;stroke:rgb(21,128,61);" />
+<polygon points="1457,413 1446,418 1446,409" style="fill:rgb(51,65,85)"/>
+<path d="M1321,400 L 1363,400 Q 1375,400 1375,407 Q 1375,413 1387,413 L 1440,413 L 1452,413"  style="fill:none;stroke-width:2.16;stroke:rgb(51,65,85);stroke-dasharray:7.2,7.2;" />
+</svg>

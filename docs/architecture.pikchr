@@ -1,0 +1,97 @@
+linerad = 8px
+boxrad = 8px
+charht = 0.16in
+$margin = 0.32in
+
+# ============================================================================
+# Column 1: Multi-Agent Clients (1 User : N Personal Agent Tokens)
+# ============================================================================
+down
+A1: box "Antigravity IDE" "(erp_pat_antigravity_...)" bold wid 2.15in ht 0.54in fill white color 0x1d4ed8
+move 0.15in
+A2: box "Claude Desktop" "(erp_pat_claude-desktop_...)" bold wid 2.15in ht 0.54in fill white color 0x1d4ed8
+move 0.15in
+A3: box "Claude Code" "(erp_pat_claude-code_...)" bold wid 2.15in ht 0.54in fill white color 0x1d4ed8
+move 0.15in
+A4: box "DSH / Custom Agent" "(Scoped / Read-Only PAT)" bold wid 2.15in ht 0.54in fill white color 0x1d4ed8
+
+# ============================================================================
+# Column 2: Headless ERP MCP Server (Zero Direct Table Mutation)
+# ============================================================================
+MCP: box "ERP MCP Server" "(TypeScript / Stdio / HTTP)" "Zero Direct Table Access" bold wid 2.3in ht 0.88in fill white color 0x15803d \
+     with .w at 0.95in right of 0.5<A2.e,A3.e>
+
+RLSBlock: box "Direct Table REST API" "RLS: USING (false) Blocked!" small wid 2.3in ht 0.56in fill 0xfef2f2 color 0xb91c1c \
+          with .n at 0.35in below MCP.s
+
+# ============================================================================
+# Column 3: Supabase Fat Database Engine (PL/pgSQL SECURITY DEFINER RPCs)
+# ============================================================================
+AuthRPC: box "fn_authenticate_and_authorize()" "SHA-256 PAT + Dynamic RBAC" bold wid 2.55in ht 0.62in fill white color 0xb45309 \
+         with .w at 1.05in right of (MCP.e + (0, 0.75in))
+
+MakerRPC: box "Maker RPCs (สร้างชุดร่าง)" "rpc_create_journal_draft" "rpc_create_inventory_doc_draft" wid 2.55in ht 0.72in fill white color 0x1d4ed8 \
+          with .n at 0.24in below AuthRPC.s
+
+CheckerRPC: box "Checker RPCs (อนุมัติ/Post)" "Maker != Checker + วงเงินอนุมัติ" "SUM(Debit) = SUM(Credit)" wid 2.55in ht 0.72in fill white color 0x15803d \
+            with .n at 0.24in below MakerRPC.s
+
+# ============================================================================
+# Column 4: Immutable Ledgers & Dual-Identity Audit Trail
+# ============================================================================
+GL: cylinder "Immutable GL Ledger" "(gl_entries + vouchers)" "Block UPDATE / DELETE" bold wid 2.25in ht 0.74in fill white color 0x854d0e \
+    with .w at 0.95in right of AuthRPC.e
+
+INV: cylinder "Immutable Inventory" "(inventory_transactions)" "Auto-Post Linked GL" bold wid 2.25in ht 0.74in fill white color 0x854d0e \
+     with .n at 0.24in below GL.s
+
+AUDIT: cylinder "Dual-Identity Audit" "(audit_logs + heartbeats)" "User ID + Agent Client" bold wid 2.25in ht 0.74in fill white color 0x334155 \
+       with .n at 0.24in below INV.s
+
+# ============================================================================
+# Background Zones (Drawn BEHIND A1)
+# ============================================================================
+ZoneClients: box wid A1.wid + $margin \
+             ht (A1.n.y - A4.s.y) + $margin*1.65 \
+             at 0.08in above 0.5<A1.n,A4.s> \
+             fill 0xeff6ff color 0x93c5fd behind A1
+text "1. AI Clients (1 User : N PATs)" bold small color 0x1d4ed8 with .n at 0.05in below ZoneClients.n
+
+ZoneMCP: box wid MCP.wid + $margin \
+         ht (MCP.n.y - RLSBlock.s.y) + $margin*1.7 \
+         at 0.08in above 0.5<MCP.n,RLSBlock.s> \
+         fill 0xf0fdf4 color 0x86efac behind A1
+text "2. MCP Gateway Layer" bold small color 0x15803d with .n at 0.05in below ZoneMCP.n
+
+ZoneRPC: box wid AuthRPC.wid + $margin \
+         ht (AuthRPC.n.y - CheckerRPC.s.y) + $margin*1.65 \
+         at 0.08in above 0.5<AuthRPC.n,CheckerRPC.s> \
+         fill 0xfef3c7 color 0xfcd34d behind A1
+text "3. Fat Database (PL/pgSQL RPCs)" bold small color 0xb45309 with .n at 0.05in below ZoneRPC.n
+
+ZoneLedger: box wid GL.wid + $margin \
+            ht (GL.n.y - AUDIT.s.y) + $margin*1.65 \
+            at 0.08in above 0.5<GL.n,AUDIT.s> \
+            fill 0xfefce8 color 0xfde047 behind A1
+text "4. Immutable PostgreSQL Ledgers" bold small color 0x854d0e with .n at 0.05in below ZoneLedger.n
+
+# ============================================================================
+# Connectors & Flows
+# ============================================================================
+arrow from A1.e right 0.35in then down until even with (MCP.w + (0, 0.16in)) then to (MCP.w + (0, 0.16in)) color 0x1d4ed8
+arrow from A2.e right 0.2in then down until even with (MCP.w + (0, 0.05in)) then to (MCP.w + (0, 0.05in)) color 0x1d4ed8
+arrow from A3.e right 0.2in then up until even with (MCP.w + (0, -0.05in)) then to (MCP.w + (0, -0.05in)) color 0x1d4ed8
+arrow from A4.e right 0.35in then up until even with (MCP.w + (0, -0.16in)) then to (MCP.w + (0, -0.16in)) color 0x1d4ed8
+
+arrow from MCP.s to RLSBlock.n dashed color 0xb91c1c
+
+arrow from MCP.e right 0.42in " rpc_*()" ljust small bold \
+  then up until even with AuthRPC.w \
+  then to AuthRPC.w color 0x15803d
+
+arrow from AuthRPC.s to MakerRPC.n color 0xb45309
+arrow from MakerRPC.s to CheckerRPC.n color 0x1d4ed8
+
+arrow from CheckerRPC.e right 0.38in then up until even with GL.w then to GL.w color 0x15803d
+arrow from CheckerRPC.e right 0.38in then up until even with INV.w then to INV.w color 0x15803d
+arrow from CheckerRPC.e right 0.38in then down until even with AUDIT.w then to AUDIT.w dashed color 0x334155

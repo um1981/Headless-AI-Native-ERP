@@ -1,6 +1,18 @@
 # Headless AI-Native ERP (Supabase + MCP Server)
 
+> [!IMPORTANT]
+> **สถานะโปรเจกต์ (Project Status: Work in Progress / Open for Fork & Adaptation)**
+> โปรเจกต์นี้อยู่ระหว่างการพัฒนาอย่างต่อเนื่อง (Active Development) โดยเปิดเป็น **Public / Open-Source** เพื่อให้ผู้ที่สนใจ นักพัฒนา หรือองค์กรต่างๆ สามารถ **Clone / Fork นำไปดัดแปลง ต่อยอด หรือสร้างระบบ ERP บน Supabase ของตัวเองได้อย่างอิสระ**
+
 ระบบ **Headless AI-Native ERP** ที่ออกแบบด้วยสถาปัตยกรรม **Ledger-First**, **Fat Database Pattern (PL/pgSQL RPC)**, **Dynamic Database-Driven RBAC (Maker-Checker)** และ **1 User : Multiple Personal Agent Tokens (PAT)** รองรับการสั่งงานจาก AI Agent หลายตัวพร้อมกัน (Antigravity, Claude Desktop, Claude Code, DSH)
+
+---
+
+## แผนภาพสถาปัตยกรรมระบบ (System Architecture Diagram)
+
+![Headless AI-Native ERP Architecture](./docs/architecture.svg)
+
+*สร้างด้วย [Pikchr](./docs/architecture.pikchr) — สามารถดูโค้ดต้นฉบับได้ที่ [`docs/architecture.pikchr`](./docs/architecture.pikchr)*
 
 ---
 
