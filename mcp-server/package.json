@@ -1,0 +1,23 @@
+{
+  "name": "headless-ai-native-erp-mcp",
+  "version": "1.0.0",
+  "description": "Headless AI-Native ERP MCP Server enforcing Zero Direct Table Mutation, Fat Database PL/pgSQL RPCs, Dynamic RBAC & Multi-Agent PAT Authentication",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@supabase/supabase-js": "^2.48.1",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

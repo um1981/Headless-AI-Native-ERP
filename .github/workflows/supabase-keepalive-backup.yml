@@ -1,0 +1,36 @@
+name: Supabase Daily Keep-Alive & Ledger Snapshot
+
+on:
+  schedule:
+    # Runs every day at 01:00 UTC (08:00 ICT) to prevent Supabase 7-day inactivity pause
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  keepalive-and-backup:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Trigger rpc_health_keepalive on Supabase
+        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_KEY != '' }}
+        run: |
+          response=$(curl -sS -X POST "$SUPABASE_URL/rest/v1/rpc/rpc_health_keepalive" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"p_source": "github_actions_daily_cron"}')
+          echo "Keep-Alive Response: $response"
+
+      - name: Optional Full pg_dump if SUPABASE_DB_URL Secret is Configured
+        if: ${{ secrets.SUPABASE_DB_URL != '' }}
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          mkdir -p backups
+          pg_dump "$SUPABASE_DB_URL" --schema=public > "backups/erp_backup_$(date +%Y%m%d).sql"
+          ls -lh backups/
