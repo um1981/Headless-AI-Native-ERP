@@ -1,54 +1,56 @@
 # Headless AI-Native ERP (Supabase + MCP Server)
 
-> [!IMPORTANT]
-> **สถานะโปรเจกต์ (Project Status: Work in Progress / Open for Fork & Adaptation)**
-> โปรเจกต์นี้อยู่ระหว่างการพัฒนาอย่างต่อเนื่อง (Active Development) โดยเปิดเป็น **Public / Open-Source** เพื่อให้ผู้ที่สนใจ นักพัฒนา หรือองค์กรต่างๆ สามารถ **Clone / Fork นำไปดัดแปลง ต่อยอด หรือสร้างระบบ ERP บน Supabase ของตัวเองได้อย่างอิสระ**
+🌐 **Language / ภาษา:** **English** | [ภาษาไทย (Thai)](./README.th.md)
 
-ระบบ **Headless AI-Native ERP** ที่ออกแบบด้วยสถาปัตยกรรม **Ledger-First**, **Fat Database Pattern (PL/pgSQL RPC)**, **Dynamic Database-Driven RBAC (Maker-Checker)** และ **1 User : Multiple Personal Agent Tokens (PAT)** รองรับการสั่งงานจาก AI Agent หลายตัวพร้อมกัน (Antigravity, Claude Desktop, Claude Code, DSH)
+> [!IMPORTANT]
+> **Project Status: Work in Progress / Open for Fork & Adaptation**
+> This project is under active development and is published as an **open-source reference implementation**. Anyone—developers, teams, or organizations—is welcome to **fork, clone, adapt, and extend** this repository to build their own custom AI-Native ERP on Supabase.
+
+A **Headless AI-Native ERP** engineered with a **Ledger-First** philosophy, **Fat Database Pattern (PL/pgSQL RPC)**, **Dynamic Database-Driven RBAC (Maker-Checker separation of duties)**, and **1 User : Multiple Personal Agent Tokens (PAT)**—allowing multiple AI agents (Antigravity, Claude Desktop, Claude Code, DSH, or custom MCP clients) to safely operate on a single enterprise ledger concurrently.
 
 ---
 
-## แผนภาพสถาปัตยกรรมระบบ (System Architecture Diagram)
+## System Architecture Diagram
 
 ![Headless AI-Native ERP Architecture](./docs/architecture.svg)
 
-*สร้างด้วย [Pikchr](./docs/architecture.pikchr) — สามารถดูโค้ดต้นฉบับได้ที่ [`docs/architecture.pikchr`](./docs/architecture.pikchr)*
+*Authored with [Pikchr](./docs/architecture.pikchr) — open [`docs/architecture.html`](./docs/architecture.html) in a browser for an interactive pan/zoom view and live editor.*
 
 ---
 
-## กฎสถาปัตยกรรมหลัก 5 ข้อ (Core Architecture Rules)
+## 5 Core Architecture Rules
 
 1. **Zero Direct Table Access/Mutation from Agent:**
-   - เปิดใช้งาน Row-Level Security (RLS) ทุกตารางโดยปิดกั้นการอ่านและเขียนตารางตรง (`USING (false)`) ไม่อนุญาตให้ทำคำสั่ง `SELECT`, `INSERT`, `UPDATE`, `DELETE` ผ่าน REST API โดยตรงแม้จะมี Anon Key
+   - Row-Level Security (RLS) is enabled across all 16 tables with strict `USING (false)` policies, completely blocking direct `SELECT`, `INSERT`, `UPDATE`, and `DELETE` calls via the PostgREST API—even when holding a valid `SUPABASE_ANON_KEY`.
 2. **Fat Database Pattern (PL/pgSQL RPC):**
-   - ทุกธุรกรรมและการดึงข้อมูลทางธุรกิจทำงานผ่านฟังก์ชัน `rpc_*` ใน PostgreSQL ภายใต้ Transaction (ACID) เดียวกันทั้งหมด พร้อมตรวจ `ERP_AGENT_TOKEN` ทุกครั้ง
+   - Every business operation and query is encapsulated inside PostgreSQL `SECURITY DEFINER` RPC functions (`rpc_*`) executing within strict ACID transaction boundaries and validating `ERP_AGENT_TOKEN` on every invocation.
 3. **Ledger-First & Immutability:**
-   - ตารางสมุดบัญชีแยกประเภท (`gl_entries`), ตารางเคลื่อนไหวสต็อก (`inventory_transactions`) และตารางประวัติ (`audit_logs`) มี Trigger `fn_block_mutation` ป้องกันการ `UPDATE` และ `DELETE` 100%
-   - การแก้ไขต้องทำผ่านการกลับรายการ (`rpc_reverse_journal_voucher`) หรือปรับปรุงยอดเท่านั้น
-   - ตรวจสอบสมการบัญชีคู่ `SUM(debit) = SUM(credit)` ทุกครั้งก่อนบันทึกบัญชี
+   - Posted records in `gl_entries`, `inventory_transactions`, and `audit_logs` are strictly immutable—protected by the `fn_block_mutation` PostgreSQL trigger that blocks `UPDATE` and `DELETE` operations 100%.
+   - Corrections must be performed exclusively via reversal vouchers (`rpc_reverse_journal_voucher`) or adjustment documents.
+   - Double-entry enforcement: Every GL voucher verifies `SUM(debit) = SUM(credit)` prior to commit.
 4. **Supabase Free Tier Mitigations:**
-   - มีตาราง `audit_logs` ที่บันทึกอัตโนมัติผ่าน Trigger `fn_audit_trigger` ทุกตาราง
-   - มีฟังก์ชัน `rpc_health_keepalive`, สคริปต์ `scripts/keepalive_and_backup.ps1` และ GitHub Actions `.github/workflows/supabase-keepalive-backup.yml` รันทุกวันเพื่อป้องกันการหยุดทำงานเมื่อไม่มีการใช้งานครบ 7 วัน
+   - Maintains an internal `audit_logs` table populated automatically via `fn_audit_trigger` across all tables (mitigating the 1-day log retention limit on Supabase Free Tier).
+   - Includes `rpc_health_keepalive`, [`scripts/keepalive_and_backup.ps1`](./scripts/keepalive_and_backup.ps1), and a daily GitHub Actions workflow [`.github/workflows/supabase-keepalive-backup.yml`](./.github/workflows/supabase-keepalive-backup.yml) to prevent the 7-day inactivity pause and export daily JSON snapshots.
 5. **Multi-Agent Authentication, Dynamic RBAC & Dual-Identity Auditability:**
-   - **1 User : Multiple Personal Agent Tokens (PAT):** ผู้ใช้ 1 คน (`erp_users`) สามารถออก Token (`user_agent_tokens` เก็บเป็น SHA-256 Hash) แยกตามเครื่องมือ AI ที่ใช้ (`antigravity`, `claude-desktop`, `claude-code`, `dsh`) พร้อมกำหนด Scope จำกัดสิทธิ์รายตัว (`allowed_scopes`) หรือยกเลิกรายตัวได้
-   - **Dynamic Database-Driven RBAC & Maker-Checker:** ตั้งค่า `roles`, `permissions`, `role_permissions` (`require_different_approver`, `max_approval_amount`) และ `user_roles` ในฐานข้อมูล ปรับเปลี่ยนได้ทันทีโดยไม่ต้องแก้โค้ด
-   - **Dual-Identity Audit Trail:** บันทึกทั้งตัวบุคคล (`actor_user_id` / `actor_email`) และเครื่องมือ AI (`agent_client` / `token_id`) ในทุกเอกสารและ `audit_logs`
+   - **1 User : Multiple Personal Agent Tokens (PAT):** Each human user (`erp_users`) can issue multiple Personal Agent Tokens (`user_agent_tokens`, stored as SHA-256 hashes) per AI client (`antigravity`, `claude-desktop`, `claude-code`, `dsh`). Each token supports optional scope caps (`allowed_scopes`, e.g., read-only or draft-only) and individual revocation.
+   - **Dynamic Database-Driven RBAC & Maker-Checker:** Roles (`roles`), permissions (`permissions`), policy constraints (`role_permissions` with `require_different_approver` and `max_approval_amount`), and assignments (`user_roles`) live in PostgreSQL tables and can be reconfigured at runtime without code changes.
+   - **Dual-Identity Audit Trail:** Every transaction and `audit_logs` entry records both the human owner (`actor_user_id` / `actor_email`) and the specific AI client/token (`agent_client` / `token_id`) that executed the action.
 
 ---
 
-## วิธีนำโปรเจกต์ไปสร้างบน Supabase ของคุณเอง (Self-Hosting Guide)
+## Self-Hosting Guide (Deploy on Your Own Supabase)
 
-### ขั้นตอนที่ 1: สร้างโปรเจกต์ Supabase และรัน SQL Migrations
-1. สร้างโปรเจกต์ใหม่บน [Supabase](https://supabase.com)
-2. นำไฟล์ SQL ในโฟลเดอร์ [`supabase/migrations/`](./supabase/migrations/) ไปรันตามลำดับ (`0001` ถึง `0005`) ผ่าน **Supabase SQL Editor** หรือใช้ Supabase CLI (`supabase db push`):
+### Step 1: Create a Supabase Project & Run SQL Migrations
+1. Create a new project on [Supabase](https://supabase.com).
+2. Execute the SQL migration files inside [`supabase/migrations/`](./supabase/migrations/) in order (`0001` through `0005`) via the **Supabase SQL Editor** or Supabase CLI (`supabase db push`):
    - `202610200001_iam_rbac_and_audit_foundation.sql`
    - `202610200002_gl_inventory_and_sequences_schema.sql`
    - `202610200003_fat_database_rpc_functions.sql`
    - `202610200004_seed_rbac_coa_warehouses_and_initial_users.sql`
    - `202610200005_security_hardening_zero_direct_access.sql`
 
-### ขั้นตอนที่ 2: สร้าง Admin Token ใบแรก (Bootstrap Initial Admin PAT)
-เนื่องจากระบบปิดกั้นการเข้าถึงโดยไม่มี Token ให้รันคำสั่ง SQL ด้านล่างนี้ใน **Supabase SQL Editor** เพียงครั้งเดียวเพื่อสร้าง Personal Agent Token (PAT) ใบแรกสำหรับ `admin@erp.local`:
+### Step 2: Bootstrap Your Initial Admin Token (PAT)
+Because all RPC endpoints require a valid Personal Agent Token, run the following one-time snippet in the **Supabase SQL Editor** to mint your first Admin PAT for `admin@erp.local`:
 
 ```sql
 DO $$
@@ -75,21 +77,21 @@ BEGIN
 END;
 $$;
 ```
-> คัดลอกค่า `erp_pat_admin_...` ที่แสดงในแท็บ **Messages / Notices** ไปใช้เป็น `ERP_AGENT_TOKEN` ของคุณ จากนั้นคุณสามารถเรียก Tool `erp_issue_agent_token` ผ่าน MCP เพื่อออก Token แยกตามผู้ใช้และ AI Agent ตัวอื่นๆ (`antigravity`, `claude-desktop`, `claude-code`, `dsh`) ได้ทันที
+> Copy the `erp_pat_admin_...` token printed in the **Messages / Notices** tab and use it as your `ERP_AGENT_TOKEN`. Once connected, you can use the `erp_issue_agent_token` MCP tool to issue dedicated tokens for additional users and AI clients (`antigravity`, `claude-desktop`, `claude-code`, `dsh`).
 
 ---
 
-### ขั้นตอนที่ 3: ติดตั้งและตั้งค่า ERP MCP Server
+### Step 3: Install & Configure the ERP MCP Server
 
 ```bash
 cd mcp-server
 cp .env.example .env
-# แก้ไขค่า SUPABASE_URL, SUPABASE_ANON_KEY และ ERP_AGENT_TOKEN ในไฟล์ .env
+# Edit SUPABASE_URL, SUPABASE_ANON_KEY, and ERP_AGENT_TOKEN in .env
 npm install
 npm run build
 ```
 
-#### ตัวอย่างการตั้งค่าใน AI Clients (1 User : N Agent Tokens)
+#### Example AI Client Configuration (1 User : N Agent Tokens)
 
 ```json
 {
@@ -109,24 +111,24 @@ npm run build
 
 ---
 
-## รายชื่อฟังก์ชัน PL/pgSQL RPC ในระบบ
+## PL/pgSQL RPC Reference (`rpc_*`)
 
-| หมวดหมู่ | ชื่อฟังก์ชัน RPC | สิทธิ์ที่ต้องใช้ (Permission) | รายละเอียด |
+| Module | RPC Function | Required Permission | Description |
 |---|---|---|---|
-| **IAM / RBAC** | `rpc_whoami(p_agent_token)` | *(Valid PAT)* | ตรวจสอบข้อมูลผู้ใช้, Agent Client, Role และสิทธิ์ที่คำนวณแล้ว |
-| **IAM / RBAC** | `rpc_issue_agent_token(...)` | เจ้าของบัญชี หรือ `rbac.manage` | ออก Personal Agent Token (`erp_pat_<client>_...`) ใหม่ |
-| **IAM / RBAC** | `rpc_revoke_agent_token(...)` | เจ้าของบัญชี หรือ `rbac.manage` | ยกเลิกการใช้งาน Token รายตัว |
-| **IAM / RBAC** | `rpc_assign_user_role(...)` | `rbac.manage` | เพิ่ม/อัปเดตผู้ใช้และกำหนด Role |
-| **IAM / RBAC** | `rpc_configure_role_permission(...)` | `rbac.manage` | ตั้งค่าสิทธิ์ของ Role, เงื่อนไข Maker-Checker และวงเงินอนุมัติ |
-| **General Ledger** | `rpc_create_gl_account(...)` | `gl.coa.manage` | เพิ่ม/แก้ไขผังบัญชี (Chart of Accounts) |
-| **General Ledger** | `rpc_create_journal_draft(...)` | `gl.voucher.draft` | สร้างใบสำคัญทั่วไปฉบับร่าง (`DRAFT`) (Maker) |
-| **General Ledger** | `rpc_post_journal_voucher(...)` | `gl.voucher.post` | อนุมัติและ Post ใบสำคัญลง `gl_entries` (Checker - ตรวจ Maker-Checker) |
-| **General Ledger** | `rpc_reverse_journal_voucher(...)` | `gl.voucher.reverse` | กลับรายการใบสำคัญที่ Post แล้วด้วยใบสำคัญกลับรายการ (`JVR-...`) |
-| **General Ledger** | `rpc_get_trial_balance(...)` | `gl.report.read` | เรียกดูงบทดลอง (Trial Balance) แบบ Real-time |
-| **Inventory** | `rpc_create_item(...)` | `inventory.master.manage` | สร้าง/แก้ไขรหัสสินค้า (SKU) และการผูกบัญชี |
-| **Inventory** | `rpc_create_inventory_doc_draft(...)` | `inventory.movement.draft` | สร้างใบรับ/เบิก/ปรับปรุงสต็อกฉบับร่าง (`DRAFT`) (Maker) |
-| **Inventory** | `rpc_post_inventory_doc(...)` | `inventory.movement.post` | อนุมัติเอกสารสต็อก ลง `inventory_transactions` และ Post GL อัตโนมัติ |
-| **Inventory** | `rpc_list_inventory_balances(...)` | *(Valid PAT)* | ตรวจสอบยอดคงเหลือและต้นทุนเฉลี่ยในคลังสินค้า |
-| **Audit & Backup** | `rpc_list_audit_logs(...)` | `audit.read` | ตรวจสอบประวัติ Dual-Identity Audit Logs |
-| **Audit & Backup** | `rpc_export_ledger_snapshot(...)` | `audit.read` | ส่งออกข้อมูลสมุดบัญชีและสต็อกสำหรับสำรองข้อมูลรายวัน |
-| **System** | `rpc_health_keepalive(...)` | Public / Cron | บันทึก Heartbeat ป้องกัน Supabase Free Tier หยุดทำงาน |
+| **IAM / RBAC** | `rpc_whoami(p_agent_token)` | *(Valid PAT)* | Inspect authenticated human user, AI agent client, assigned roles, and effective permissions |
+| **IAM / RBAC** | `rpc_issue_agent_token(...)` | Self or `rbac.manage` | Issue a new Personal Agent Token (`erp_pat_<client>_...`) with optional scope caps |
+| **IAM / RBAC** | `rpc_revoke_agent_token(...)` | Self or `rbac.manage` | Revoke a specific Personal Agent Token immediately |
+| **IAM / RBAC** | `rpc_assign_user_role(...)` | `rbac.manage` | Create/update an ERP user and assign a role |
+| **IAM / RBAC** | `rpc_configure_role_permission(...)` | `rbac.manage` | Configure role permissions, Maker-Checker enforcement, and approval amount limits |
+| **General Ledger** | `rpc_create_gl_account(...)` | `gl.coa.manage` | Create or update Chart of Accounts (COA) entries |
+| **General Ledger** | `rpc_create_journal_draft(...)` | `gl.voucher.draft` | Create a balanced `DRAFT` Journal Voucher (Maker) |
+| **General Ledger** | `rpc_post_journal_voucher(...)` | `gl.voucher.post` | Approve and post a voucher into immutable `gl_entries` (Checker - enforces Maker-Checker) |
+| **General Ledger** | `rpc_reverse_journal_voucher(...)` | `gl.voucher.reverse` | Reverse a posted voucher by generating a contra-entry voucher (`JVR-...`) |
+| **General Ledger** | `rpc_get_trial_balance(...)` | `gl.report.read` | Generate a real-time Trial Balance report from `gl_entries` |
+| **Inventory** | `rpc_create_item(...)` | `inventory.master.manage` | Create or update an inventory SKU and its GL account mapping |
+| **Inventory** | `rpc_create_inventory_doc_draft(...)` | `inventory.movement.draft` | Create a `DRAFT` inventory movement document (`RECEIPT`, `ISSUE`, `ADJUSTMENT`) |
+| **Inventory** | `rpc_post_inventory_doc(...)` | `inventory.movement.post` | Approve and post an inventory document into `inventory_transactions` with automatic GL posting |
+| **Inventory** | `rpc_list_inventory_balances(...)` | *(Valid PAT)* | Query current on-hand quantity and moving average cost across warehouses |
+| **Audit & Backup** | `rpc_list_audit_logs(...)` | `audit.read` | Query Dual-Identity Audit Logs (`actor_email` + `agent_client`) |
+| **Audit & Backup** | `rpc_export_ledger_snapshot(...)` | `audit.read` | Export a complete JSON snapshot of ledgers, inventory, and audit logs for daily backup |
+| **System** | `rpc_health_keepalive(...)` | Public / Cron | Record a heartbeat ping to prevent Supabase Free Tier 7-day inactivity pause |
